@@ -2,7 +2,7 @@
 plugins {
     id("justwriter.android.application")
     id("justwriter.android.application.compose")
-//    alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("justwriter.android.application.flavors")
 }
 
 android {
