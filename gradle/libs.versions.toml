@@ -165,4 +165,3 @@ secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugi
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [bundles]
-
