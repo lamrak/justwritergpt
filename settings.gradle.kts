@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "JustWriter"
 include(":app")
 //include(":build-logic")
+include(":core:model")
