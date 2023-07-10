@@ -165,5 +165,6 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+com-android-library = { id = "com.android.library", version.ref = "agp" }
 
 [bundles]
