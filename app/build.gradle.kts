@@ -3,6 +3,7 @@ plugins {
     id("justwriter.android.application")
     id("justwriter.android.application.compose")
     id("justwriter.android.application.flavors")
+    id("justwriter.android.hilt")
 }
 
 android {
@@ -31,22 +32,23 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+
+    buildTypes {
+        val debug by getting {
+            applicationIdSuffix = net.validcat.justwriter.AppBuildType.DEBUG.applicationIdSuffix
+        }
+        val release by getting {
+            isMinifyEnabled = true
+            applicationIdSuffix = net.validcat.justwriter.AppBuildType.RELEASE.applicationIdSuffix
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
+            signingConfig = signingConfigs.getByName("debug")
+        }
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.8"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
         }
     }
 }
@@ -60,6 +62,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.androidx.core.splashscreen)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
