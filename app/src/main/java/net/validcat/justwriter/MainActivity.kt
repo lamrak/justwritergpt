@@ -39,10 +39,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.validcat.justwriter.ui.theme.JustWriterTheme
 
@@ -53,19 +56,30 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
 
-//        var state: MainState by mutableStateOf(Loading)
-//
-//        lifecycleScope.launch {
-//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.uiState
-//                    .onEach {
-//                        state = it
-//                    }
-//                    .collect()
-//            }
-//        }
+        var state: MainState by mutableStateOf(MainState.Loading)
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState
+                    .onEach {
+                        state = it
+                    }
+                    .collect()
+            }
+        }
+
+        splashScreen.setKeepOnScreenCondition {
+            when (state) {
+                MainState.Loading -> true
+                is MainState.Success -> false
+            }
+        }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
+            val navController = rememberAnimatedNavController()
+
             JustWriterTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
