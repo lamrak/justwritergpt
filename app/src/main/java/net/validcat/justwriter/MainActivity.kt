@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -39,103 +40,68 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.validcat.justwriter.feature.notes.navigation.NotesNavigationRoute
+import net.validcat.justwriter.feature.notes.navigation.notesScreen
 import net.validcat.justwriter.ui.theme.JustWriterTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
 
-//        var state: MainState by mutableStateOf(Loading)
-//
-//        lifecycleScope.launch {
-//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.uiState
-//                    .onEach {
-//                        state = it
-//                    }
-//                    .collect()
-//            }
-//        }
+        var state: MainState by mutableStateOf(MainState.Loading)
 
-        setContent {
-            JustWriterTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    LazyColumnSample(modifier = Modifier.padding(all = 8.dp))
-                }
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState
+                    .onEach {
+                        state = it
+                    }
+                    .collect()
             }
         }
-    }
-}
 
-@Composable
-fun LazyColumnSample(modifier: Modifier) {
-    val itemsList = (0..5).toList()
-    val itemsIndexedList = listOf("A", "B", "C")
-
-    LazyColumn(
-        modifier = modifier
-    ) {
-        item {
-            Text("Header")
+        splashScreen.setKeepOnScreenCondition {
+            when (state) {
+                MainState.Loading -> true
+                is MainState.Success -> false
+            }
         }
 
-        items(itemsList) {
-            LazyListItem("Item is $it")
-        }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        itemsIndexed(itemsIndexedList) { index, item ->
-            Text("Item at index $index is $item")
-        }
-    }
-}
+        setContent {
+            val navController = rememberAnimatedNavController()
 
-@Composable
-fun LazyListItem(str: String) {
-    Row(modifier = Modifier.padding(all = 4.dp)) {
-        Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
-            contentDescription = "Contact profile picture",
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-
-        var isExpanded by remember { mutableStateOf(false) }
-        val surfaceColor by animateColorAsState(
-            if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-            label = "",
-        )
-
-        Box(
-            modifier = Modifier.clickable { isExpanded = isExpanded.not() }) {
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp,
-                color = surfaceColor,
-                // animateContentSize will change the Surface size gradually
-                modifier = Modifier
-                    .animateContentSize()
-                    .padding(1.dp)
-            ) {
-                Text(
-                    "Item is $str",
-                    modifier = if (isExpanded) Modifier
-                        .padding(all = 8.dp)
-                        .fillMaxWidth() else Modifier.padding(all = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium
-                )
+            JustWriterTheme {
+                AnimatedNavHost(
+                    navController = navController,
+                    startDestination = NotesNavigationRoute
+                ) {
+                    notesScreen(
+//                        onSettingsClick = { openSettingsDialog = true },
+//                        onAddNoteClick = { navController.navigateToNote() },
+//                        onNoteClick = { id ->
+//                            navController.navigateToNote(id)
+//                        }
+                    )
+//                    noteScreen(
+//                        onBackClick = { navController.popBackStack() }
+//                    )
+                }
             }
         }
     }
