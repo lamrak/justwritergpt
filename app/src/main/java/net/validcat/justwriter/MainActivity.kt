@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -43,6 +44,8 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -52,6 +55,7 @@ import net.validcat.justwriter.ui.theme.JustWriterTheme
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
@@ -81,6 +85,22 @@ class MainActivity : ComponentActivity() {
             val navController = rememberAnimatedNavController()
 
             JustWriterTheme {
+//                AnimatedNavHost(
+//                    navController = navController,
+//                    startDestination = NotesNavigationRoute
+//                ) {
+//                    notesScreen(
+//                        onSettingsClick = { openSettingsDialog = true },
+//                        onAddNoteClick = { navController.navigateToNote() },
+//                        onNoteClick = { id ->
+//                            navController.navigateToNote(id)
+//                        }
+//                    )
+//                    noteScreen(
+//                        onBackClick = { navController.popBackStack() }
+//                    )
+//                }
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
