@@ -5,7 +5,9 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import net.validcat.justwriter.core.data.repository.LocalNoteRepository
+import net.validcat.justwriter.core.data.repository.LocalUserDataRepository
 import net.validcat.justwriter.core.data.repository.NoteRepository
+import net.validcat.justwriter.core.data.repository.UserDataRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -15,4 +17,9 @@ interface DataModule {
     fun bindsNoteRepository(
         topicsRepository: LocalNoteRepository,
     ): NoteRepository
+
+    @Binds
+    fun bindsUserDataRepository(
+        userDataRepository: LocalUserDataRepository,
+    ): UserDataRepository
 }

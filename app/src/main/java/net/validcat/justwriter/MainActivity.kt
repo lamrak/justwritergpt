@@ -50,6 +50,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.validcat.justwriter.feature.notes.navigation.NotesNavigationRoute
+import net.validcat.justwriter.feature.notes.navigation.notesScreen
 import net.validcat.justwriter.ui.theme.JustWriterTheme
 
 @AndroidEntryPoint
@@ -85,91 +87,21 @@ class MainActivity : ComponentActivity() {
             val navController = rememberAnimatedNavController()
 
             JustWriterTheme {
-//                AnimatedNavHost(
-//                    navController = navController,
-//                    startDestination = NotesNavigationRoute
-//                ) {
-//                    notesScreen(
+                AnimatedNavHost(
+                    navController = navController,
+                    startDestination = NotesNavigationRoute
+                ) {
+                    notesScreen(
 //                        onSettingsClick = { openSettingsDialog = true },
 //                        onAddNoteClick = { navController.navigateToNote() },
 //                        onNoteClick = { id ->
 //                            navController.navigateToNote(id)
 //                        }
-//                    )
+                    )
 //                    noteScreen(
 //                        onBackClick = { navController.popBackStack() }
 //                    )
-//                }
-
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    LazyColumnSample(modifier = Modifier.padding(all = 8.dp))
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun LazyColumnSample(modifier: Modifier) {
-    val itemsList = (0..5).toList()
-    val itemsIndexedList = listOf("A", "B", "C")
-
-    LazyColumn(
-        modifier = modifier
-    ) {
-        item {
-            Text("Header")
-        }
-
-        items(itemsList) {
-            LazyListItem("Item is $it")
-        }
-
-        itemsIndexed(itemsIndexedList) { index, item ->
-            Text("Item at index $index is $item")
-        }
-    }
-}
-
-@Composable
-fun LazyListItem(str: String) {
-    Row(modifier = Modifier.padding(all = 4.dp)) {
-        Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
-            contentDescription = "Contact profile picture",
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-
-        var isExpanded by remember { mutableStateOf(false) }
-        val surfaceColor by animateColorAsState(
-            if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-            label = "",
-        )
-
-        Box(
-            modifier = Modifier.clickable { isExpanded = isExpanded.not() }) {
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp,
-                color = surfaceColor,
-                // animateContentSize will change the Surface size gradually
-                modifier = Modifier
-                    .animateContentSize()
-                    .padding(1.dp)
-            ) {
-                Text(
-                    "Item is $str",
-                    modifier = if (isExpanded) Modifier
-                        .padding(all = 8.dp)
-                        .fillMaxWidth() else Modifier.padding(all = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium
-                )
             }
         }
     }
