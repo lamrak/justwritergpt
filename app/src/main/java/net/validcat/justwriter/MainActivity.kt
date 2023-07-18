@@ -50,6 +50,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.validcat.justwriter.feature.notes.CupcakeApp
 import net.validcat.justwriter.feature.notes.navigation.NotesNavigationRoute
 import net.validcat.justwriter.feature.notes.navigation.notesScreen
 import net.validcat.justwriter.ui.theme.JustWriterTheme
@@ -87,21 +88,22 @@ class MainActivity : ComponentActivity() {
             val navController = rememberAnimatedNavController()
 
             JustWriterTheme {
-                AnimatedNavHost(
-                    navController = navController,
-                    startDestination = NotesNavigationRoute
-                ) {
-                    notesScreen(
-//                        onSettingsClick = { openSettingsDialog = true },
-//                        onAddNoteClick = { navController.navigateToNote() },
-//                        onNoteClick = { id ->
-//                            navController.navigateToNote(id)
-//                        }
-                    )
-//                    noteScreen(
-//                        onBackClick = { navController.popBackStack() }
+                CupcakeApp()
+//                AnimatedNavHost(
+//                    navController = navController,
+//                    startDestination = NotesNavigationRoute
+//                ) {
+//                    notesScreen(
+////                        onSettingsClick = { openSettingsDialog = true },
+////                        onAddNoteClick = { navController.navigateToNote() },
+////                        onNoteClick = { id ->
+////                            navController.navigateToNote(id)
+////                        }
 //                    )
-                }
+////                    noteScreen(
+////                        onBackClick = { navController.popBackStack() }
+////                    )
+//                }
             }
         }
     }

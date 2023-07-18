@@ -50,7 +50,6 @@ internal fun NotesRoute(
     )
 }
 @OptIn(ExperimentalFoundationApi::class)
-@Suppress("LongMethod")
 @Composable
 fun NotesScreen(
 //    uiState: NotesViewModel.NotesUiState,
