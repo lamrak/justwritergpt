@@ -34,29 +34,26 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 internal fun NotesRoute(
-//    viewModel: NotesViewModel = hiltViewModel(),
+    viewModel: NotesViewModel = hiltViewModel(),
+    onNoteClick: (Int) -> Unit
 //    onSettingsClick: () -> Unit,
-//    onAddNoteClick: () -> Unit,
-//    onNoteClick: (Int) -> Unit
 ) {
-//    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NotesScreen(
-//        uiState = uiState,
-//        onEvent = viewModel::onEvent,
+        uiState = uiState,
+        onEvent = viewModel::onEvent,
+        onNoteClick = onNoteClick
 //        onSettingsClick = onSettingsClick,
-//        onAddNoteClick = onAddNoteClick,
-//        onNoteClick = onNoteClick
     )
 }
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NotesScreen(
-//    uiState: NotesViewModel.NotesUiState,
-//    onEvent: (NotesViewModel.NotesEvent) -> Unit,
+    uiState: NotesViewModel.NotesUiState,
+    onEvent: (NotesViewModel.NotesEvent) -> Unit,
+    onNoteClick: (Int) -> Unit
 //    onSettingsClick: () -> Unit,
-//    onAddNoteClick: () -> Unit,
-//    onNoteClick: (Int) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),

@@ -95,10 +95,14 @@ fun CupcakeApp(
         ) {
             composable(route = JWScreen.Start.name) {
                 NotesRoute(
-    //            onSettingsClick = onSettingsClick,
-    //            onAddNoteClick = onAddNoteClick,
-    //            onNoteClick = onNoteClick
+                    onNoteClick = { note ->
+//                        navController.navigateToNote(id)
+                    }
+//            onSettingsClick = onSettingsClick,
                 )
+//                noteScreen(
+//                    onBackClick = { navController.popBackStack() }
+//                )
             }
         }
     }
