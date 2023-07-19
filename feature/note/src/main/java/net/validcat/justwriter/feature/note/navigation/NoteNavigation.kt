@@ -20,7 +20,6 @@ fun NavController.navigateToNote(
     this.navigate(NoteNavigationRoute.plus("/$noteId"), navOptions)
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.noteScreen(
     onBackClick: () -> Unit
 ) {
