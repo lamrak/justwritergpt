@@ -33,7 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-internal fun NotesRoute(
+fun NotesRoute(
     viewModel: NotesViewModel = hiltViewModel(),
     onNoteClick: (Int) -> Unit
 //    onSettingsClick: () -> Unit,

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.validcat.justwriter.feature.notes
+package net.validcat.justwriter
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
@@ -36,7 +36,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import net.validcat.justwriter.feature.notes.navigation.NotesNavigationRoute
+import net.validcat.justwriter.feature.notes.NotesRoute
+import net.validcat.justwriter.feature.notes.R
 
 /**
  * Composable that displays the topBar and displays back button if back navigation is possible.
