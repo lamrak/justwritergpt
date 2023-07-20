@@ -12,13 +12,13 @@ const val NotesNavigationRoute = "notes_route"
 fun NavGraphBuilder.notesScreen(
 //    onSettingsClick: () -> Unit,
 //    onAddNoteClick: () -> Unit,
-//    onNoteClick: (Int) -> Unit
+    onNoteClick: (Int) -> Unit
 ) {
     composable(route = NotesNavigationRoute) {
         NotesRoute(
 //            onSettingsClick = onSettingsClick,
 //            onAddNoteClick = onAddNoteClick,
-//            onNoteClick = onNoteClick
+            onNoteClick = onNoteClick
         )
     }
 }

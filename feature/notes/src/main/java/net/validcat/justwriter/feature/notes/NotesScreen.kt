@@ -31,34 +31,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import net.validcat.justwriter.core.data.R.*
 
 @Composable
-internal fun NotesRoute(
+fun NotesRoute(
     viewModel: NotesViewModel = hiltViewModel(),
+    onNoteClick: (Int) -> Unit
 //    onSettingsClick: () -> Unit,
-//    onAddNoteClick: () -> Unit,
-//    onNoteClick: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NotesScreen(
         uiState = uiState,
         onEvent = viewModel::onEvent,
+        onNoteClick = onNoteClick
 //        onSettingsClick = onSettingsClick,
-//        onAddNoteClick = onAddNoteClick,
-//        onNoteClick = onNoteClick
     )
 }
 @OptIn(ExperimentalFoundationApi::class)
-@Suppress("LongMethod")
 @Composable
 fun NotesScreen(
     uiState: NotesViewModel.NotesUiState,
     onEvent: (NotesViewModel.NotesEvent) -> Unit,
+    onNoteClick: (Int) -> Unit
 //    onSettingsClick: () -> Unit,
-//    onAddNoteClick: () -> Unit,
-//    onNoteClick: (Int) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -94,13 +89,13 @@ fun LazyColumnSample(modifier: Modifier) {
 @Composable
 fun LazyListItem(str: String) {
     Row(modifier = Modifier.padding(all = 4.dp)) {
-//        Image(
-//            painter = painterResource(drawable.ic_launcher_background),
-//            contentDescription = "Contact profile picture",
-//            modifier = Modifier
-//                .size(50.dp)
-//                .clip(CircleShape)
-//        )
+        Image(
+            painter = painterResource(androidx.core.R.drawable.ic_call_answer),
+            contentDescription = "Contact profile picture",
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+        )
         Spacer(modifier = Modifier.width(8.dp))
 
         var isExpanded by remember { mutableStateOf(false) }
