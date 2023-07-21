@@ -17,5 +17,4 @@ class JWOpenAIRepository @Inject constructor(
             Note(1, "first", "second", "third",  -1, false, Clock.System.now())
         }
     }
-
 }

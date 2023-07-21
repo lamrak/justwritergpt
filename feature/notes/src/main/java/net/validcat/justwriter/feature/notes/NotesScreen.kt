@@ -28,9 +28,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import net.validcat.justwriter.core.designsystem.JWLoadingWheel
+import net.validcat.justwriter.core.model.data.Note
 
 @Composable
 fun NotesRoute(
@@ -38,11 +41,14 @@ fun NotesRoute(
     onNoteClick: (Int) -> Unit
 //    onSettingsClick: () -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+    val noteItems by viewModel.noteItems.collectAsStateWithLifecycle()
 
     NotesScreen(
-        uiState = uiState,
-        onEvent = viewModel::onEvent,
+        isLoading = isLoading,
+        errorMessage = errorMessage,
+        noteItems = noteItems,
         onNoteClick = onNoteClick
 //        onSettingsClick = onSettingsClick,
     )
@@ -50,38 +56,50 @@ fun NotesRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NotesScreen(
-    uiState: NotesViewModel.NotesUiState,
-    onEvent: (NotesViewModel.NotesEvent) -> Unit,
-    onNoteClick: (Int) -> Unit
+    isLoading: Boolean,
+    errorMessage: String?,
+    noteItems: List<NoteItem>,
+    onNoteClick: (Int) -> Unit,
 //    onSettingsClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
+    val isNoteSelected = remember(noteItems) {
+        noteItems.any { it.isSelected }
+    }
+
+    if (isLoading) {
+        JWLoadingWheel(
+            modifier = modifier,
+            contentDesc = stringResource(id = R.string.loading),
+        )
+    } else {
+        NotesScreenView(
+            noteItems = noteItems,
+            onNoteClick = onNoteClick,
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun NotesScreenView(noteItems: List<NoteItem>, onNoteClick: (Int) -> Unit, modifier: Modifier) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        LazyColumnSample(modifier = Modifier.padding(all = 8.dp))
+        LazyColumnSample(noteItems = noteItems, modifier = modifier)
     }
 }
 
 
 @Composable
-fun LazyColumnSample(modifier: Modifier) {
-    val itemsList = (0..5).toList()
-    val itemsIndexedList = listOf("A", "B", "C")
-
+fun LazyColumnSample(noteItems: List<NoteItem>,
+                     modifier: Modifier) {
     LazyColumn(
         modifier = modifier
     ) {
-        item {
-            Text("Header")
-        }
-
-        items(itemsList) {
+        items(noteItems) {
             LazyListItem("Item is $it")
-        }
-
-        itemsIndexed(itemsIndexedList) { index, item ->
-            Text("Item at index $index is $item")
         }
     }
 }
