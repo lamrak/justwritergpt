@@ -12,9 +12,20 @@ import javax.inject.Inject
 class JWOpenAIRepository @Inject constructor(
     private val noteDao: NoteDao
 ) : OpenAIRepository {
-    override fun getOverview(): Flow<Note> {
+    override fun getOverview(): Flow<List<Note>> {
         return flow {
-            Note(1, "first", "second", "third",  -1, false, Clock.System.now())
+            emit(
+                listOf(
+                    Note(
+                        1,
+                        "first",
+                        "second",
+                        "third",
+                        -1,
+                        false,
+                        Clock.System.now())
+                )
+            )
         }
     }
 }

@@ -4,9 +4,11 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import net.validcat.justwriter.core.data.repository.JWOpenAIRepository
 import net.validcat.justwriter.core.data.repository.LocalNoteRepository
 import net.validcat.justwriter.core.data.repository.LocalUserDataRepository
 import net.validcat.justwriter.core.data.repository.NoteRepository
+import net.validcat.justwriter.core.data.repository.OpenAIRepository
 import net.validcat.justwriter.core.data.repository.UserDataRepository
 
 @Module
@@ -22,4 +24,9 @@ interface DataModule {
     fun bindsUserDataRepository(
         userDataRepository: LocalUserDataRepository,
     ): UserDataRepository
+
+    @Binds
+    fun bindsOpenAIRepository(
+        userDataRepository: JWOpenAIRepository,
+    ): OpenAIRepository
 }

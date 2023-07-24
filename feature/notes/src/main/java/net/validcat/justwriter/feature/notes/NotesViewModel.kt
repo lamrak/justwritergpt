@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import net.validcat.justwriter.core.data.repository.JWOpenAIRepository
 import net.validcat.justwriter.core.data.repository.LocalNoteRepository
 import net.validcat.justwriter.core.data.repository.NoteRepository
 import net.validcat.justwriter.core.data.repository.UserDataRepository
@@ -24,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotesViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
+    private val openaiRepository: JWOpenAIRepository,
     private val noteRepository: NoteRepository
 ) : ViewModel() {
 
@@ -33,7 +35,7 @@ class NotesViewModel @Inject constructor(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage = _errorMessage.asStateFlow()
 
-    val noteItems = noteRepository.getNotes().map {
+    val noteItems = openaiRepository.getOverview().map {
         it.toNoteItems()
     }.stateIn(
         scope = viewModelScope,

@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 import net.validcat.justwriter.core.model.data.Note
 
 interface OpenAIRepository {
-    fun getOverview(): Flow<Note>
+    fun getOverview(): Flow<List<Note>>
 }
