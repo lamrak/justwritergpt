@@ -1,9 +1,9 @@
-package net.validcat.justwriter.core.networking.retrofit
+package net.validcat.justwriter.core.network.retrofit
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import net.validcat.justwriter.core.networking.JWNetworkDataSource
+import net.validcat.justwriter.core.network.JWNetworkDataSource
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -35,7 +35,7 @@ class RetrofitJWNetwork @Inject constructor(
 ) : JWNetworkDataSource {
 
     private val networkApi = Retrofit.Builder()
-        .baseUrl("")
+        .baseUrl("https://api.openai.com/v1")
         .callFactory(okhttpCallFactory)
         .addConverterFactory(
             networkJson.asConverterFactory("application/json".toMediaType()),

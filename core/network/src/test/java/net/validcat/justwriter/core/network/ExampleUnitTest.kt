@@ -1,4 +1,4 @@
-package net.validcat.justwriter.core.networking
+package net.validcat.justwriter.core.network
 
 import org.junit.Test
 

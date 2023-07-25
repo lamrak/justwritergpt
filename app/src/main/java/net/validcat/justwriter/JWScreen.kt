@@ -70,7 +70,7 @@ fun JWAppBar(
 }
 
 @Composable
-fun CupcakeApp(
+fun JustWriteApp(
     navController: NavHostController = rememberNavController()
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()

@@ -15,12 +15,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.validcat.justwriter.core.designsystem.JWLoadingWheel
-import net.validcat.justwriter.core.model.data.Note
 
 @Composable
 fun NotesRoute(
@@ -49,7 +48,7 @@ fun NotesRoute(
         isLoading = isLoading,
         errorMessage = errorMessage,
         noteItems = noteItems,
-        onNoteClick = onNoteClick
+        onNoteClick = viewModel::getRemoteOverview
 //        onSettingsClick = onSettingsClick,
     )
 }
@@ -59,12 +58,17 @@ fun NotesScreen(
     isLoading: Boolean,
     errorMessage: String?,
     noteItems: List<NoteItem>,
-    onNoteClick: (Int) -> Unit,
+    onNoteClick: () -> Unit,
 //    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isNoteSelected = remember(noteItems) {
         noteItems.any { it.isSelected }
+    }
+
+
+    LaunchedEffect(Unit) {
+        onNoteClick()
     }
 
     if (isLoading) {
@@ -82,7 +86,7 @@ fun NotesScreen(
 }
 
 @Composable
-fun NotesScreenView(noteItems: List<NoteItem>, onNoteClick: (Int) -> Unit, modifier: Modifier) {
+fun NotesScreenView(noteItems: List<NoteItem>, onNoteClick: () -> Unit, modifier: Modifier) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background

@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberAnimatedNavController()
 
             JustWriterTheme {
-                CupcakeApp()
+                JustWriteApp()
             }
         }
     }

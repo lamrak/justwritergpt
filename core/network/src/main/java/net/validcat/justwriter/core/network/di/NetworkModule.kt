@@ -1,4 +1,4 @@
-package net.validcat.justwriter.core.networking.di
+package net.validcat.justwriter.core.network.di
 
 import android.content.Context
 import coil.ImageLoader

@@ -1,4 +1,4 @@
-package net.validcat.justwriter.core.networking
+package net.validcat.justwriter.core.network
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
