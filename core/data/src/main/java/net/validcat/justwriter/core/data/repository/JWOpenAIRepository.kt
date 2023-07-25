@@ -32,7 +32,7 @@ class JWOpenAIRepository @Inject constructor(
 ) : OpenAIRepository {
     @OptIn(BetaOpenAI::class)
     override suspend fun getOverview(): Flow<ChatCompletionChunk> {
-            val openAI = OpenAI("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")
+            val openAI = OpenAI("sk-")
 
             val chatCompletionRequest = ChatCompletionRequest(
                 model = ModelId("gpt-3.5-turbo"),
