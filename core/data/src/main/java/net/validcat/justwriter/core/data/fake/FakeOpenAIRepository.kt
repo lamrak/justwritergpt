@@ -1,21 +1,23 @@
-package net.validcat.justwriter.core.data.repository
+package net.validcat.justwriter.core.data.fake
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import net.validcat.justwriter.core.data.repository.OpenAIRepository
 import net.validcat.justwriter.core.database.dao.NoteDao
 import net.validcat.justwriter.core.network.AppDispatchers
 import net.validcat.justwriter.core.network.Dispatcher
 import net.validcat.justwriter.core.network.NetworkDataSource
+import net.validcat.justwriter.core.network.fake.FakeNetworkDataSource
 import net.validcat.justwriter.core.network.model.OpenAIRequest
 import net.validcat.justwriter.core.network.model.UserContent
 import javax.inject.Inject
 
-class JWOpenAIRepository @Inject constructor(
-    private val noteDao: NoteDao,
+class FakeOpenAIRepository @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-    private val networkDataSource: NetworkDataSource
+    private val networkDataSource: FakeNetworkDataSource
 ) : OpenAIRepository {
 
     override suspend fun getOverview(searchPhrase: String): Flow<Any> {
@@ -24,14 +26,10 @@ class JWOpenAIRepository @Inject constructor(
             messages = listOf(UserContent(role = "user", content = searchPhrase))
         )
 
-        try {
-            val topic = networkDataSource.getTopics("Bearer ", data)
-        } catch (e: Exception) {
-            Log.d(this.toString(), e.toString())
-        }
-
         return flow {
-            Any()
-        }
+            emit(
+                networkDataSource.getTopics("", data)
+            )
+        }.flowOn(ioDispatcher)
     }
 }

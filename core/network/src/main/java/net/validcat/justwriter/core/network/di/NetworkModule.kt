@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
+import net.validcat.justwriter.core.network.fake.FakeAssetManager
 import okhttp3.OkHttpClient
 import okhttp3.Call
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,11 +27,11 @@ object NetworkModule {
         ignoreUnknownKeys = true
     }
 
-//    @Provides
-//    @Singleton
-//    fun providesFakeAssetManager(
-//        @ApplicationContext context: Context,
-//    ): FakeAssetManager = FakeAssetManager(context.assets::open)
+    @Provides
+    @Singleton
+    fun providesFakeAssetManager(
+        @ApplicationContext context: Context,
+    ): FakeAssetManager = FakeAssetManager(context.assets::open)
 
     @Provides
     @Singleton
