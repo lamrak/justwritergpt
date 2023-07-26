@@ -40,29 +40,16 @@ class NotesViewModel @Inject constructor(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage = _errorMessage.asStateFlow()
 
-    init {
-        getRemoteOverview()
-    }
-
     fun getRemoteOverview() {
         viewModelScope.launch {
-            openaiRepository.getOverview().asResult().map {
+            openaiRepository.getOverview("Tell story with the next words: snake, fox, friendship").asResult().map {
                 _isLoading.update { false }
 
                 when (it) {
                     is Error -> _errorMessage.update { "Error" }
-                    Loading -> TODO()
-                    is Success -> _noteDescription.update {
-                        "updated"
-                    }
+                    Loading -> _isLoading.update { true }
+                    is Success -> _noteDescription.update { "updated" }
                 }
-
-//                    .onEach { print(it.choices.first().delta?.content.orEmpty()) }
-//                .onCompletion {
-//                    Log.d(this.toString(), "Creating chat completions stream...")
-//                }
-//                .launchIn(this)
-//                .join()
             }
         }
     }

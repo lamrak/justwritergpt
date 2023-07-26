@@ -3,7 +3,7 @@ package net.validcat.justwriter.core.network.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GPTSettings(
+data class OpenAIRequest(
     val model: String = "",
     val messages: List<UserContent>,
     val maxTokens: Int = 256,

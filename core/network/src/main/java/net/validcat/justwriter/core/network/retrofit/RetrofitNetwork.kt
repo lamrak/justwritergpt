@@ -4,8 +4,8 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import net.validcat.justwriter.core.network.model.OpenAIResponse
-import net.validcat.justwriter.core.network.JWNetworkDataSource
-import net.validcat.justwriter.core.network.model.GPTSettings
+import net.validcat.justwriter.core.network.NetworkDataSource
+import net.validcat.justwriter.core.network.model.OpenAIRequest
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -19,26 +19,18 @@ private interface RetrofitJWNetworkApi {
     @POST(value = "/v1/chat/completions")
     suspend fun getTopics(
         @Header("Authorization") token: String,
-        @Body body: GPTSettings
+        @Body body: OpenAIRequest
     ): OpenAIResponse
 }
 
-/**
- * Wrapper for data provided from the [JWBaseUrl]
- */
-@Serializable
-private data class NetworkResponse<T>(
-    val data: T,
-)
-
 @Singleton
-class RetrofitJWNetwork @Inject constructor(
+class RetrofitNetwork @Inject constructor(
     networkJson: Json,
     okhttpCallFactory: Call.Factory,
-) : JWNetworkDataSource {
+) : NetworkDataSource {
 
     private val networkApi = Retrofit.Builder()
-        .baseUrl("https://api.openai.com/")
+        .baseUrl("https://api.openai.com/") //TODO Move to BuildConfig
         .callFactory(okhttpCallFactory)
         .addConverterFactory(
             networkJson.asConverterFactory("application/json".toMediaType()),
@@ -46,6 +38,6 @@ class RetrofitJWNetwork @Inject constructor(
         .build()
         .create(RetrofitJWNetworkApi::class.java)
 
-    override suspend fun getTopics(token: String, body: GPTSettings): OpenAIResponse =
+    override suspend fun getTopics(token: String, body: OpenAIRequest): OpenAIResponse =
         networkApi.getTopics(token = token, body = body)
 }
