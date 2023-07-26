@@ -66,9 +66,12 @@ fun NotesScreen(
         noteItems.any { it.isSelected }
     }
 
-
     LaunchedEffect(Unit) {
         onNoteClick()
+    }
+
+    errorMessage?.let {
+        Text(text = "$errorMessage")
     }
 
     if (isLoading) {

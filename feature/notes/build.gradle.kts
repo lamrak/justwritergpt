@@ -11,5 +11,4 @@ android {
 dependencies {
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.kotlinx.datetime)
-    implementation(libs.openai.client)
 }

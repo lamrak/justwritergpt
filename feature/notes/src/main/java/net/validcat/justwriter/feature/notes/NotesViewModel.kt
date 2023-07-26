@@ -2,7 +2,6 @@ package net.validcat.justwriter.feature.notes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aallam.openai.api.BetaOpenAI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,11 +44,18 @@ class NotesViewModel @Inject constructor(
         getRemoteOverview()
     }
 
-    @OptIn(BetaOpenAI::class)
     fun getRemoteOverview() {
         viewModelScope.launch {
-            openaiRepository.getOverview().map {
+            openaiRepository.getOverview().asResult().map {
                 _isLoading.update { false }
+
+                when (it) {
+                    is Error -> _errorMessage.update { "Error" }
+                    Loading -> TODO()
+                    is Success -> _noteDescription.update {
+                        "updated"
+                    }
+                }
 
 //                    .onEach { print(it.choices.first().delta?.content.orEmpty()) }
 //                .onCompletion {
@@ -57,13 +63,9 @@ class NotesViewModel @Inject constructor(
 //                }
 //                .launchIn(this)
 //                .join()
-                _noteDescription.update {
-                    "updated"
-                }
             }
         }
     }
-
 
     val noteItems = noteRepository.getNotes().map {
         _isLoading.update { false }

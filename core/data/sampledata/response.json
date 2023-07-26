@@ -1,0 +1,21 @@
+{
+    "id": "chatcmpl-7gDVZWoOYa3Vjsdp5sf1ZmcKGXPzY",
+    "object": "chat.completion",
+    "created": 1690296057,
+    "model": "gpt-3.5-turbo-0613",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "Italy has won the FIFA World Cup four times. They won in the years 1934, 1938, 1982, and 2006."
+              },
+            "finish_reason": "stop"
+          }
+      ],
+    "usage": {
+        "prompt_tokens": 14,
+        "completion_tokens": 32,
+        "total_tokens": 46
+      }
+}
