@@ -21,7 +21,7 @@ class FakeNetworkDataSource @Inject constructor(
 ) : NetworkDataSource {
 
     @OptIn(ExperimentalSerializationApi::class)
-    override suspend fun getTopics(token: String, openAIRequest: OpenAIRequest): OpenAIResponse =
+    override suspend fun getStory(token: String, openAIRequest: OpenAIRequest): OpenAIResponse =
         withContext(context = ioDispatcher) {
             assets.open(RESPONSE_OPENAI_ASSET).use(networkJson::decodeFromStream)
         }

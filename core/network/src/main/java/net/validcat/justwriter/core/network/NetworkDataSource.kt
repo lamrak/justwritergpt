@@ -1,9 +1,9 @@
 package net.validcat.justwriter.core.network
 
-import net.validcat.justwriter.core.network.model.OpenAIResponse
 import net.validcat.justwriter.core.network.model.OpenAIRequest
+import net.validcat.justwriter.core.network.model.OpenAIResponse
 
 interface NetworkDataSource {
 
-    suspend fun getTopics(token: String, openAIRequest: OpenAIRequest): OpenAIResponse
+    suspend fun getStory(token: String, openAIRequest: OpenAIRequest): OpenAIResponse
 }

@@ -38,6 +38,6 @@ class RetrofitNetwork @Inject constructor(
         .build()
         .create(RetrofitJWNetworkApi::class.java)
 
-    override suspend fun getTopics(token: String, body: OpenAIRequest): OpenAIResponse =
+    override suspend fun getStory(token: String, body: OpenAIRequest): OpenAIResponse =
         networkApi.getTopics(token = token, body = body)
 }

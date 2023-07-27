@@ -6,7 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import net.validcat.justwriter.core.database.AppDatabase
 import net.validcat.justwriter.core.database.dao.NoteDao
-import net.validcat.justwriter.core.database.dao.OverviewDao
+import net.validcat.justwriter.core.database.dao.StoryDao
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -18,7 +18,8 @@ object DaosModule {
     ): NoteDao = database.noteDao()
 
     @Provides
-    fun providesOverviewDao(
+    fun providesStoryDao(
         database: AppDatabase,
-    ): OverviewDao = database.overviewDao()
+    ): StoryDao = database.storyDao()
+
 }
