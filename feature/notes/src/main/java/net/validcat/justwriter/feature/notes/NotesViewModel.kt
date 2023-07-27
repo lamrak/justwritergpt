@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import net.validcat.justwriter.core.data.repository.JWOpenAIRepository
+import net.validcat.justwriter.core.data.fake.FakeOpenAIRepository
 import net.validcat.justwriter.core.data.repository.NoteRepository
 import net.validcat.justwriter.core.data.repository.UserDataRepository
 import net.validcat.justwriter.core.model.data.Story
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotesViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
-    private val openaiRepository: JWOpenAIRepository,
+    private val openaiRepository: FakeOpenAIRepository,
     private val noteRepository: NoteRepository
 ) : ViewModel() {
 
@@ -53,7 +53,7 @@ class NotesViewModel @Inject constructor(
     fun getRemoteOverview() {
         viewModelScope.launch {
                 _isLoading.update { true }
-            openaiRepository.fetchOverview("Tell story with the next words: snake, fox, friendship")
+            openaiRepository.fetchOverview("Tell short story with the next words: snake, fox, friendship")
                 _isLoading.update { false }
         }
     }

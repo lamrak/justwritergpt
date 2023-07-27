@@ -11,10 +11,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import net.validcat.justwriter.core.network.fake.FakeAssetManager
-import okhttp3.OkHttpClient
 import okhttp3.Call
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -42,6 +42,8 @@ object NetworkModule {
                     setLevel(HttpLoggingInterceptor.Level.BODY)
                 },
         )
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
         .build()
 
     /**
