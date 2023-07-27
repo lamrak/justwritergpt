@@ -1,8 +1,10 @@
 package net.validcat.justwriter.core.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import net.validcat.justwriter.core.model.data.Note
+import net.validcat.justwriter.core.model.data.Story
 
 interface OpenAIRepository {
-    fun getOverview(): Flow<Note>
+
+    suspend fun fetchOverview(searchPhrase: String)
+    fun getOverview(id: Int): Flow<Story>
 }

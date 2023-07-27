@@ -6,7 +6,6 @@ plugins {
 
 android {
     namespace = "net.validcat.justwriter.core.datastore"
-
 }
 
 dependencies {

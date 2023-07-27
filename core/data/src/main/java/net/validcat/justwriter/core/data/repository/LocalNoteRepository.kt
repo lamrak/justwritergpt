@@ -24,14 +24,16 @@ class LocalNoteRepository @Inject constructor(
 //                .sortedBy { it.createDate }
 //                .map { it.toModel() }
 //        }
-        //TODO mock up till gpt is on vacation
+//        //TODO mock up till gpt is on vacation
+
+        val list = listOf(
+            Note(1, "first", "second", "third",  -1, false, Clock.System.now()),
+            Note(2, "first", "second", "third",  -1, false, Clock.System.now()),
+            Note(3, "first", "second", "third",  -1, false, Clock.System.now()),
+            Note(4, "first", "second", "third",  -1, false, Clock.System.now())
+        )
         return flow {
-            listOf<Note>(
-                Note(1, "first", "second", "third",  -1, false, Clock.System.now()),
-                Note(2, "first", "second", "third",  -1, false, Clock.System.now()),
-                Note(3, "first", "second", "third",  -1, false, Clock.System.now()),
-                Note(4, "first", "second", "third",  -1, false, Clock.System.now())
-            )
+            emit(list)
         }
     }
 
