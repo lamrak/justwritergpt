@@ -15,8 +15,6 @@ import net.validcat.justwriter.core.data.repository.JWOpenAIRepository
 import net.validcat.justwriter.core.data.repository.NoteRepository
 import net.validcat.justwriter.core.data.repository.UserDataRepository
 import net.validcat.justwriter.core.model.data.Story
-import net.validcat.justwriter.core.result.Result.*
-import net.validcat.justwriter.core.result.asResult
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,7 +33,16 @@ class NotesViewModel @Inject constructor(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage = _errorMessage.asStateFlow()
 
-    val overview: StateFlow<Story> =
+    val noteItems = noteRepository.getNotes().map {
+        _isLoading.update { false }
+        it.toNoteItems()
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = emptyList()
+    )
+
+    val story: StateFlow<Story> =
         openaiRepository.getOverview(id = 0)
             .stateIn(
                 scope = viewModelScope,
