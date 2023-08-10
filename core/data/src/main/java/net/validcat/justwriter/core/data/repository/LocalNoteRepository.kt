@@ -7,13 +7,13 @@ import kotlinx.datetime.Clock
 import net.validcat.justwriter.core.data.mapper.toEntity
 import net.validcat.justwriter.core.data.mapper.toModel
 import net.validcat.justwriter.core.database.dao.NoteDao
-import net.validcat.justwriter.core.database.entity.NoteEntity
 import net.validcat.justwriter.core.model.data.Note
 import javax.inject.Inject
 
 class LocalNoteRepository @Inject constructor(
     private val noteDao: NoteDao
 ) : NoteRepository {
+
     override fun getNote(id: Int): Flow<Note> {
         return noteDao.getNote(id).map { it.toModel() }
     }

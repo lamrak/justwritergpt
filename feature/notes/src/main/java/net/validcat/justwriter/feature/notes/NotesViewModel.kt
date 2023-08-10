@@ -50,11 +50,19 @@ class NotesViewModel @Inject constructor(
                 initialValue = Story()
             )
 
+    fun getNotes() {
+        viewModelScope.launch {
+            _isLoading.update { true }
+            openaiRepository.fetchOverview("Tell short story with the next words: snake, fox, friendship")
+            _isLoading.update { false }
+        }
+    }
+
     fun getRemoteOverview() {
         viewModelScope.launch {
-                _isLoading.update { true }
+            _isLoading.update { true }
             openaiRepository.fetchOverview("Tell short story with the next words: snake, fox, friendship")
-                _isLoading.update { false }
+            _isLoading.update { false }
         }
     }
 

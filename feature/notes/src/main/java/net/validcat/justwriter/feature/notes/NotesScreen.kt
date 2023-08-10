@@ -2,7 +2,6 @@ package net.validcat.justwriter.feature.notes
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -44,6 +43,10 @@ fun NotesRoute(
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
     val noteItems by viewModel.noteItems.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.getNotes()
+    }
+
     NotesScreen(
         isLoading = isLoading,
         errorMessage = errorMessage,
@@ -52,7 +55,7 @@ fun NotesRoute(
 //        onSettingsClick = onSettingsClick,
     )
 }
-@OptIn(ExperimentalFoundationApi::class)
+
 @Composable
 fun NotesScreen(
     isLoading: Boolean,
@@ -64,10 +67,6 @@ fun NotesScreen(
 ) {
     val isNoteSelected = remember(noteItems) {
         noteItems.any { it.isSelected }
-    }
-
-    LaunchedEffect(Unit) {
-        onNoteClick()
     }
 
     errorMessage?.let {
@@ -94,28 +93,29 @@ fun NotesScreenView(noteItems: List<NoteItem>, onNoteClick: () -> Unit, modifier
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        LazyColumnSample(noteItems = noteItems, modifier = modifier)
+        LazyColumnSample(noteItems = noteItems, onNoteClick = onNoteClick, modifier = modifier)
     }
 }
 
 
 @Composable
 fun LazyColumnSample(noteItems: List<NoteItem>,
+                     onNoteClick: () -> Unit,
                      modifier: Modifier) {
     LazyColumn(
         modifier = modifier
     ) {
         items(noteItems) {
-            LazyListItem("Item is $it")
+            LazyListItem("Item is $it", onNoteClick)
         }
     }
 }
 
 @Composable
-fun LazyListItem(str: String) {
+fun LazyListItem(str: String, onNoteClick: () -> Unit,) {
     Row(modifier = Modifier.padding(all = 4.dp)) {
         Image(
-            painter = painterResource(androidx.core.R.drawable.ic_call_answer),
+            painter = painterResource(androidx.core.R.drawable.notification_tile_bg),
             contentDescription = "Contact profile picture",
             modifier = Modifier
                 .size(50.dp)
@@ -130,7 +130,9 @@ fun LazyListItem(str: String) {
         )
 
         Box(
-            modifier = Modifier.clickable { isExpanded = isExpanded.not() }) {
+            modifier = Modifier.clickable {
+                onNoteClick()
+                isExpanded = isExpanded.not() }) {
             Surface(
                 shape = MaterialTheme.shapes.medium,
                 shadowElevation = 1.dp,
