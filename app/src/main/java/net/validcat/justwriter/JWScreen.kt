@@ -33,11 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import net.validcat.justwriter.feature.notes.NotesRoute
+import net.validcat.justwriter.feature.note.navigation.navigateToNote
+import net.validcat.justwriter.feature.note.navigation.noteScreen
 import net.validcat.justwriter.feature.notes.R
+import net.validcat.justwriter.feature.notes.navigation.NotesNavigationRoute
+import net.validcat.justwriter.feature.notes.navigation.notesScreen
 
 /**
  * Composable that displays the topBar and displays back button if back navigation is possible.
@@ -75,41 +77,39 @@ fun JustWriteApp(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
 
-    val currentScreen = JWScreen.valueOf(
-        backStackEntry?.destination?.route ?: JWScreen.Start.name
-    )
 
     Scaffold(
         topBar = {
             JWAppBar(
-                currentScreen = currentScreen,
+                currentScreen = JWScreen.Start,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
             )
         }
     ) { innerPadding ->
-//        val uiState by viewModel.uiState.collectAsState()
         NavHost(
             navController = navController,
-            startDestination = JWScreen.Start.name,
+            startDestination = NotesNavigationRoute,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = JWScreen.Start.name) {
-                NotesRoute(
-                    onNoteClick = { note ->
-//                        navController.navigateToNote(id)
-                    }
-//            onSettingsClick = onSettingsClick,
-                )
-//                noteScreen(
-//                    onBackClick = { navController.popBackStack() }
-//                )
-            }
+            notesScreen(
+                onAddNoteClick = {
+                    navController.navigateToNote()
+                },
+                onNoteClick = { id ->
+                    navController.navigateToNote(id)
+                }
+            )
+            noteScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+
         }
     }
 }
 
 enum class JWScreen(@StringRes val title: Int) {
-    Start(title = R.string.title_screen_notes)
+    Start(title = R.string.title_screen_notes),
+    Note(title = R.string.title_screen_note),
 }
 

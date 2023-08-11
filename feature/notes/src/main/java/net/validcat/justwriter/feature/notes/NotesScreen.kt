@@ -3,6 +3,7 @@ package net.validcat.justwriter.feature.notes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.validcat.justwriter.core.designsystem.JWLoadingWheel
+import net.validcat.justwriter.core.model.data.Note
 
 @Composable
 fun NotesRoute(
@@ -44,8 +45,8 @@ fun NotesRoute(
         isLoading = isLoading,
         errorMessage = errorMessage,
         noteItems = noteItems,
-        onNoteClick = viewModel::getRemoteOverview
-//        onSettingsClick = onSettingsClick,
+        onNoteClick = onNoteClick,
+        onAddNoteClick = onAddNoteClick
     )
 }
 
@@ -54,14 +55,10 @@ fun NotesScreen(
     isLoading: Boolean,
     errorMessage: String?,
     noteItems: List<NoteItem>,
-    onNoteClick: () -> Unit,
-//    onSettingsClick: () -> Unit,
+    onAddNoteClick: () -> Unit,
+    onNoteClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isNoteSelected = remember(noteItems) {
-        noteItems.any { it.isSelected }
-    }
-
     errorMessage?.let {
         Text(text = "$errorMessage")
     }
@@ -81,7 +78,7 @@ fun NotesScreen(
 }
 
 @Composable
-fun NotesScreenView(noteItems: List<NoteItem>, onNoteClick: () -> Unit, modifier: Modifier) {
+fun NotesScreenView(noteItems: List<NoteItem>, onNoteClick: (Int) -> Unit, modifier: Modifier) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -94,7 +91,7 @@ fun NotesScreenView(noteItems: List<NoteItem>, onNoteClick: () -> Unit, modifier
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyColumnSample(noteItems: List<NoteItem>,
-                     onNoteClick: () -> Unit,
+                     onNoteClick: (Int) -> Unit,
                      modifier: Modifier) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
@@ -102,20 +99,20 @@ fun LazyColumnSample(noteItems: List<NoteItem>,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         content = {
             items(items = noteItems) {
-                LazyListItem(it.note.firstWord, it.note.secondWord, it.note.thirdWord, onNoteClick)
+                LazyListItem(it.note, onNoteClick)
             }
     })
 }
 
 @Composable
-fun LazyListItem(first: String, second: String, third: String, onNoteClick: () -> Unit) {
+fun LazyListItem(note: Note, onNoteClick: (Int) -> Unit) {
     Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
-        BubbleWidget(first = first, second = second, third = third)
+        BubbleWidget(note = note, onNoteClick = onNoteClick)
     }
 }
 
 @Composable
-fun BubbleWidget(first: String, second: String, third: String, story: String = "") {
+fun BubbleWidget(note: Note, story: String = "", onNoteClick: (Int) -> Unit) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 1.dp,
@@ -125,12 +122,13 @@ fun BubbleWidget(first: String, second: String, third: String, story: String = "
             .padding(1.dp)
     ) {
         Column(modifier = Modifier
+            .clickable { onNoteClick.invoke(-1) }
             .fillMaxSize()
             .background(color = Color((Math.random() * 16777215).toInt() or (0xFF shl 24)))
             .padding(8.dp)) {
-                BuubleItem(first)
-                BuubleItem(second)
-                BuubleItem(third)
+                BuubleItem(note.firstWord)
+                BuubleItem(note.secondWord)
+                BuubleItem(note.thirdWord)
 
             if (story.isNotEmpty())
                 Text(text = story, modifier = Modifier.padding(horizontal = 12.dp))

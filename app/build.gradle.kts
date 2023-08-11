@@ -55,6 +55,7 @@ android {
 
 dependencies {
     implementation(project(":feature:notes"))
+    implementation(project(":feature:note"))
 
     implementation(project(":core:common"))
 //    implementation(project(":core:designsystem"))

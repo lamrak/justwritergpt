@@ -1,6 +1,5 @@
 package net.validcat.justwriter.feature.note.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions

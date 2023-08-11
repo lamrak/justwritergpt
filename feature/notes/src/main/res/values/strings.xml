@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_screen_notes">Writer\'s notes</string>
+    <string name="title_screen_note">Add/Edit Note</string>
     <string name="loading">Loading...\n</string>
     <string name="notes_text">"Tell me story: %s, %s, %s"</string>
 </resources>
