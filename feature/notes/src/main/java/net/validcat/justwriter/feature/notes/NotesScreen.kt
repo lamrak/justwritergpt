@@ -2,6 +2,7 @@ package net.validcat.justwriter.feature.notes
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,8 +29,8 @@ import net.validcat.justwriter.core.designsystem.JWLoadingWheel
 @Composable
 fun NotesRoute(
     viewModel: NotesViewModel = hiltViewModel(),
+    onAddNoteClick: () -> Unit,
     onNoteClick: (Int) -> Unit
-//    onSettingsClick: () -> Unit,
 ) {
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
@@ -106,7 +108,7 @@ fun LazyColumnSample(noteItems: List<NoteItem>,
 }
 
 @Composable
-fun LazyListItem(first: String, second: String, third: String, onNoteClick: () -> Unit,) {
+fun LazyListItem(first: String, second: String, third: String, onNoteClick: () -> Unit) {
     Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
         BubbleWidget(first = first, second = second, third = third)
     }
@@ -122,12 +124,14 @@ fun BubbleWidget(first: String, second: String, third: String, story: String = "
             .animateContentSize()
             .padding(1.dp)
     ) {
-        Column {
-            Row(modifier = Modifier.padding(all = 8.dp)) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color((Math.random() * 16777215).toInt() or (0xFF shl 24)))
+            .padding(8.dp)) {
                 BuubleItem(first)
                 BuubleItem(second)
                 BuubleItem(third)
-            }
+
             if (story.isNotEmpty())
                 Text(text = story, modifier = Modifier.padding(horizontal = 12.dp))
         }
