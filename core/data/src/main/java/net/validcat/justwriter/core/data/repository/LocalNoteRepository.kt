@@ -27,10 +27,11 @@ class LocalNoteRepository @Inject constructor(
 //        //TODO mock up till gpt is on vacation
 
         val list = listOf(
-            Note(1, "first", "second", "third",  -1, false, Clock.System.now()),
-            Note(2, "first", "second", "third",  -1, false, Clock.System.now()),
-            Note(3, "first", "second", "third",  -1, false, Clock.System.now()),
-            Note(4, "first", "second", "third",  -1, false, Clock.System.now())
+            Note(1, "fox", "rabbit", "friendship",  -1, false, Clock.System.now()),
+            Note(2, "boat", "river", "sea",  -1, false, Clock.System.now()),
+            Note(3, "root", "marquise", "wood",  -1, false, Clock.System.now()),
+            Note(5, "trebuchet", "master", "glory",  -1, false, Clock.System.now()),
+            Note(4, "dark", "castle", "birds",  -1, false, Clock.System.now())
         )
         return flow {
             emit(list)

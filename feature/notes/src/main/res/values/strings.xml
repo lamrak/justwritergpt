@@ -2,4 +2,5 @@
 <resources>
     <string name="title_screen_notes">Writer\'s notes</string>
     <string name="loading">Loading...\n</string>
+    <string name="notes_text">"Tell me story: %s, %s, %s"</string>
 </resources>

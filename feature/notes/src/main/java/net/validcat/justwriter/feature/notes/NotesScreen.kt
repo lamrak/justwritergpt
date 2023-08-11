@@ -1,32 +1,23 @@
 package net.validcat.justwriter.feature.notes
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -98,58 +89,67 @@ fun NotesScreenView(noteItems: List<NoteItem>, onNoteClick: () -> Unit, modifier
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyColumnSample(noteItems: List<NoteItem>,
                      onNoteClick: () -> Unit,
                      modifier: Modifier) {
-    LazyColumn(
-        modifier = modifier
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(2),
+        verticalItemSpacing = 4.dp,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        content = {
+            items(items = noteItems) {
+                LazyListItem(it.note.firstWord, it.note.secondWord, it.note.thirdWord, onNoteClick)
+            }
+    })
+}
+
+@Composable
+fun LazyListItem(first: String, second: String, third: String, onNoteClick: () -> Unit,) {
+    Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
+        BubbleWidget(first = first, second = second, third = third)
+    }
+}
+
+@Composable
+fun BubbleWidget(first: String, second: String, third: String, story: String = "") {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = 1.dp,
+        // animateContentSize will change the Surface size gradually
+        modifier = Modifier
+            .animateContentSize()
+            .padding(1.dp)
     ) {
-        items(noteItems) {
-            LazyListItem("Item is $it", onNoteClick)
+        Column {
+            Row(modifier = Modifier.padding(all = 8.dp)) {
+                BuubleItem(first)
+                BuubleItem(second)
+                BuubleItem(third)
+            }
+            if (story.isNotEmpty())
+                Text(text = story, modifier = Modifier.padding(horizontal = 12.dp))
         }
     }
 }
 
 @Composable
-fun LazyListItem(str: String, onNoteClick: () -> Unit,) {
-    Row(modifier = Modifier.padding(all = 4.dp)) {
-        Image(
-            painter = painterResource(androidx.core.R.drawable.notification_tile_bg),
-            contentDescription = "Contact profile picture",
+private fun BuubleItem(first: String) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = 1.dp,
+        // animateContentSize will change the Surface size gradually
+        modifier = Modifier
+            .animateContentSize()
+            .padding(1.dp)
+    ) {
+        Text(
+            text = first,
             modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
+                .padding(all = 8.dp),
+            style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.width(8.dp))
-
-        var isExpanded by remember { mutableStateOf(false) }
-        val surfaceColor by animateColorAsState(
-            if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-            label = "",
-        )
-
-        Box(
-            modifier = Modifier.clickable {
-                onNoteClick()
-                isExpanded = isExpanded.not() }) {
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp,
-                color = surfaceColor,
-                // animateContentSize will change the Surface size gradually
-                modifier = Modifier
-                    .animateContentSize()
-                    .padding(1.dp)
-            ) {
-                Text(
-                    "Item is $str",
-                    modifier = if (isExpanded) Modifier
-                        .padding(all = 8.dp)
-                        .fillMaxWidth() else Modifier.padding(all = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
+//                Spacer(modifier = Modifier.width(8.dp))
     }
 }
