@@ -22,3 +22,7 @@ If you have any questions, issues, or suggestions regarding the project, please 
 ## License
 
 This project is distributed under the MIT License. Please see the `LICENSE` file for further details.
+
+## Renovate
+
+(Renovate Bot)[https://developer.mend.io/github/lamrak]
