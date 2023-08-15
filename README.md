@@ -25,4 +25,4 @@ This project is distributed under the MIT License. Please see the `LICENSE` file
 
 ## Renovate
 
-(Renovate Bot)[https://developer.mend.io/github/lamrak]
+[Renovate Bot](https://developer.mend.io/github/lamrak)
