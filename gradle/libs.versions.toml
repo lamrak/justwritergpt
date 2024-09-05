@@ -11,7 +11,7 @@ activity-compose = "1.7.2"
 compose-bom = "2023.06.01"
 org-jetbrains-kotlin-jvm = "1.8.10"
 
-accompanist = "0.30.1"
+accompanist = "0.36.0"
 androidDesugarJdkLibs = "2.0.3"
 androidxActivity = "1.7.2"
 androidxAppCompat = "1.6.1"
